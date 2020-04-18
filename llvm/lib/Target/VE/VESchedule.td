@@ -9,6 +9,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+def WriteI         : SchedWrite; // ALU
+
 /*
 def ALU_FU  : FuncUnit;
 def LDST_FU : FuncUnit;

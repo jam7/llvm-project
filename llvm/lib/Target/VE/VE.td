@@ -47,17 +47,6 @@ def VEAsmParser : AsmParser {
 }
 
 //===----------------------------------------------------------------------===//
-// VE processors supported.
-//===----------------------------------------------------------------------===//
-
-class Proc<string Name, list<SubtargetFeature> Features>
- : Processor<Name, NoItineraries, Features>;
-
-def : Proc<"ve",             []>;
-// def : Processor<"ve", VEItinerary, []>;
-// def : ProcessorModel<"ve", VESchedModel, []>;
-
-//===----------------------------------------------------------------------===//
 // Declare the target which we are implementing
 //===----------------------------------------------------------------------===//
 
@@ -74,3 +63,25 @@ def VE : Target {
   let AssemblyWriters = [VEAsmWriter];
   let AllowRegisterRenaming = 1;
 }
+
+include "VESchedAurora.td"
+
+def ProcAurora : SubtargetFeature<"aurora", "NECProcFamily", "Aurora",
+                                   "NEC SX-Aurora processors", [
+                                   ]>;
+
+def : ProcessorModel<"aurora", AuroraModel, [ProcAurora]>;
+
+
+/*
+//===----------------------------------------------------------------------===//
+// VE processors supported.
+//===----------------------------------------------------------------------===//
+
+class Proc<string Name, list<SubtargetFeature> Features>
+ : Processor<Name, NoItineraries, Features>;
+
+// def : Proc<"ve",             []>;
+// def : Processor<"ve", VEItinerary, []>;
+// def : ProcessorModel<"ve", VESchedModel, []>;
+*/

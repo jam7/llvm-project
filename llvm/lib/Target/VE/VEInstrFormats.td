@@ -51,7 +51,7 @@ class InstVE<dag outs, dag ins, string asmstr, list<dag> pattern,
 
 class RM<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
          InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1>  cx = 0;
   bits<7>  sx;
   bits<1>  cy = 1;
@@ -99,7 +99,7 @@ class RRMHM<bits<8>opVal, dag outs, dag ins, string asmstr,
 
 class CF<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
          InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1>  cx = 0;
   bits<1>  cx2 = 0;
   bits<2>  bpf = 0;
@@ -129,7 +129,7 @@ class CF<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
 
 class RR<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
          InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1>  cx = 0;
   bits<7>  sx;
   bits<1>  cy = 1;
@@ -160,7 +160,7 @@ class RR<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
 // RRFENCE type is special RR type for a FENCE instruction.
 class RRFENCE<bits<8>opVal, dag outs, dag ins, string asmstr,
               list<dag> pattern = [], InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1> avo = 0;
   bits<1> lf = 0;
   bits<1> sf = 0;
@@ -198,7 +198,7 @@ class RW<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
 
 class RVM<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
           InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1>  cx = 0;
   bits<1>  vc = 0;
   bits<1>  cs = 0;
@@ -235,7 +235,7 @@ class RVM<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = []
 
 class RV<bits<8>opVal, dag outs, dag ins, string asmstr, list<dag> pattern = [],
          InstrItinClass itin = NoItinerary>
-   : InstVE<outs, ins, asmstr, pattern, itin> {
+   : InstVE<outs, ins, asmstr, pattern, itin>, Sched<[]> {
   bits<1>  cx = 0;
   bits<1>  cx2 = 0;
   bits<1>  cs = 0;
