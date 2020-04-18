@@ -34,7 +34,6 @@ def IsNoNaNs : Predicate<"TM.Options.NoNaNsFPMath">;
 
 include "VERegisterInfo.td"
 include "VECallingConv.td"
-include "VESchedule.td"
 include "VEInstrInfo.td"
 
 def VEInstrInfo : InstrInfo;
@@ -45,17 +44,6 @@ def VEAsmParser : AsmParser {
   let AllowDuplicateRegisterNames = 1;
   let ShouldEmitMatchRegisterAltName = 1;
 }
-
-//===----------------------------------------------------------------------===//
-// VE processors supported.
-//===----------------------------------------------------------------------===//
-
-class Proc<string Name, list<SubtargetFeature> Features>
- : Processor<Name, NoItineraries, Features>;
-
-def : Proc<"ve",             []>;
-// def : Processor<"ve", VEItinerary, []>;
-// def : ProcessorModel<"ve", VESchedModel, []>;
 
 //===----------------------------------------------------------------------===//
 // Declare the target which we are implementing
@@ -74,3 +62,22 @@ def VE : Target {
   let AssemblyWriters = [VEAsmWriter];
   let AllowRegisterRenaming = 1;
 }
+
+//===----------------------------------------------------------------------===//
+// ARM schedules.
+//===----------------------------------------------------------------------===//
+
+include "VESchedule.td"
+
+//===----------------------------------------------------------------------===//
+// ARM processors
+
+def ProcGeneric : SubtargetFeature<"generic", "NECProcFamily", "Aurora",
+                                   "NEC SX-Aurora processors", [
+                                   ]>;
+def ProcAurora : SubtargetFeature<"aurora", "NECProcFamily", "Aurora",
+                                   "NEC SX-Aurora processors", [
+                                   ]>;
+
+def : ProcessorModel<"generic", NoSchedModel, [ProcGeneric]>;
+def : ProcessorModel<"aurora", AuroraModel, [ProcAurora]>;

@@ -28,19 +28,38 @@ void VESubtarget::anchor() {}
 VESubtarget &VESubtarget::initializeSubtargetDependencies(StringRef CPU,
                                                           StringRef FS) {
   // Determine default and user specified characteristics
-  std::string CPUName = std::string(CPU);
-  if (CPUName.empty())
-    CPUName = "ve";
+  if (CPU.empty())
+    CPU = "generic";
 
   // Parse features string.
-  ParseSubtargetFeatures(CPUName, FS);
+  ParseSubtargetFeatures(CPU, FS);
+  initializeProperties();
 
   return *this;
 }
 
+void VESubtarget::initializeProperties() {
+  // Initialize CPU specific properties. We should add a tablegen feature for
+  // this in the future so we can specify it together with the subtarget
+  // features.
+  switch (NECProcFamily) {
+  case Others:
+    break;
+  case Aurora:
+    PrefFunctionLogAlignment = 3;
+    CacheLineSize = 128;
+#if 0
+    PrefetchDistance = 280;
+    MinPrefetchStride = 2048;
+    MaxPrefetchIterationsAhead = 3;
+#endif
+    break;
+  }
+}
+
 VESubtarget::VESubtarget(const Triple &TT, const std::string &CPU,
                          const std::string &FS, const TargetMachine &TM)
-    : VEGenSubtargetInfo(TT, CPU, FS), TargetTriple(TT), Vectorize(false),
+    : VEGenSubtargetInfo(TT, CPU, FS), TargetTriple(TT),
       InstrInfo(initializeSubtargetDependencies(CPU, FS)), TLInfo(TM, *this),
       FrameLowering(*this) {}
 

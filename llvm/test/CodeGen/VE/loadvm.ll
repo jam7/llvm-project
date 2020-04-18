@@ -1,4 +1,5 @@
-; RUN: llc < %s -mtriple=ve-unknown-unknown | FileCheck %s
+; RUN: llc < %s -mtriple=ve | FileCheck %s
+; RUN: llc < %s -mtriple=ve -mcpu=aurora | FileCheck %s -check-prefix=AURORA
 
 @v256i1 = common dso_local local_unnamed_addr global <256 x i1> zeroinitializer, align 4
 @v512i1 = common dso_local local_unnamed_addr global <512 x i1> zeroinitializer, align 4
@@ -16,6 +17,17 @@ define x86_regcallcc <256 x i1> @loadv256i1(<256 x i1>* nocapture readonly) {
 ; CHECK-NEXT:    lvm %vm1,2,%s3
 ; CHECK-NEXT:    lvm %vm1,3,%s0
 ; CHECK-NEXT:    or %s11, 0, %s9
+; AURORA-LABEL: loadv256i1:
+; AURORA:       .LBB{{[0-9]+}}_2:
+; AURORA-NEXT:    ld %s1, (, %s0)
+; AURORA-NEXT:    lvm %vm1,0,%s1
+; AURORA-NEXT:    ld %s1, 8(, %s0)
+; AURORA-NEXT:    lvm %vm1,1,%s1
+; AURORA-NEXT:    ld %s1, 16(, %s0)
+; AURORA-NEXT:    lvm %vm1,2,%s1
+; AURORA-NEXT:    ld %s0, 24(, %s0)
+; AURORA-NEXT:    lvm %vm1,3,%s0
+; AURORA-NEXT:    or %s11, 0, %s9
   %2 = load <256 x i1>, <256 x i1>* %0, align 16
   ret <256 x i1> %2
 }

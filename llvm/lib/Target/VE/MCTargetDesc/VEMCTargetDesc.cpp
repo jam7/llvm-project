@@ -56,7 +56,7 @@ static MCRegisterInfo *createVEMCRegisterInfo(const Triple &TT) {
 static MCSubtargetInfo *createVEMCSubtargetInfo(const Triple &TT, StringRef CPU,
                                                 StringRef FS) {
   if (CPU.empty())
-    CPU = "ve";
+    CPU = "aurora";
   return createVEMCSubtargetInfoImpl(TT, CPU, FS);
 }
 
