@@ -33,6 +33,11 @@ enum NodeType : unsigned {
   SELECT_ICC,  // Select between two values using the current ICC flags.
   SELECT_XCC,  // Select between two values using the current XCC flags.
   SELECT_FCC,  // Select between two values using the current FCC flags.
+  CMPI,        // Compare between two signed integer values.
+  CMPU,        // Compare between two unsigned integer values.
+  CMPF,        // Compare between two floating-point values.
+  CMPQ,        // Compare between two quad floating-point values.
+  CMOV,        // Select between two values using the result of comparison.
 
   EH_SJLJ_SETJMP,           // SjLj exception handling setjmp.
   EH_SJLJ_LONGJMP,          // SjLj exception handling longjmp.
