@@ -270,11 +270,16 @@ public:
 
   bool isVectorMaskType(EVT VT) const;
 
-private:
+  /// Target Optimization {
+
+  bool hasAndNot(SDValue Y) const override;
+
   // VE supports only vector FMA
   bool isFMAFasterThanFMulAndFAdd(const MachineFunction &MF,
                                   EVT VT) const override
   { return VT.isVector() ? true : false; }
+
+  /// } Target Optimization
 };
 } // namespace llvm
 
