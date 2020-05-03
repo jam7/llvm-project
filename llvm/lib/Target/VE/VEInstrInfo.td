@@ -2152,15 +2152,8 @@ def : Pat<(f32 (selectcc f32:$LHS, f32:$RHS, f32:$LHS, f32:$RHS, SETOLE)),
 //   LEA    $res, $f
 //   CMOVrm $res, $t, (swap $cmp) ; $t can hold (0)0-(63)0 or (0)1-(63)1
 //
-// 3. imeediate values with swap in CMOV
-//   CMPir  $cmp, $l, $r         ; $l can hold -64 to 63
-//   LEA    $res, $t
-//   CMOVrm $res, $f, (inv $cmp) ; $f can hold (0)0-(63)0 or (0)1-(63)1
-//
-// 4. imeediate values with swap in both CMP and CMOV
-//   CMPir  $cmp, $r, $l                ; $r can hold -64 to 63
-//   LEA    $res, $t
-//   CMOVrm $res, $f, (inv (swap $cmp)) ; $t can hold (0)0-(63)0 or (0)1-(63)1
+// We already swapped $t and $f in combineSelectCC, so no need to support it
+// here.
 
 class cmovrr<Instruction INSN> :
     OutPatFrag<(ops node:$cond, node:$comp, node:$t, node:$f),
@@ -2245,42 +2238,28 @@ multiclass SEL64CMPIm<ValueType oty, ValueType cty, string Insn,
             (cmovrr<cmovrr> (icond2cc $cond), $l, $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, zero, (oty mOp:$t), oty:$f, CCSIOp:$cond)),
             (cmovrm<cmovrm> (icond2cc $cond), $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, zero, oty:$t, (oty mOp:$f), CCSIOp:$cond)),
-            (cmovrm<cmovrm> (icond2ccInv $cond), $l, $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, oty:$f, CCSIOp:$cond)),
             (cmovrr<cmovrr> (icond2cc $cond), (CMPIrr $l, $r), $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, (oty mOp:$t), oty:$f,
                            CCSIOp:$cond)),
             (cmovrm<cmovrm> (icond2cc $cond), (CMPIrr $l, $r), $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, (oty mOp:$f),
-                           CCSIOp:$cond)),
-            (cmovrm<cmovrm> (icond2ccInv $cond), (CMPIrr $l, $r), $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, oty:$f,
                            CCSIOp:$cond)),
             (cmovirrr<CMPIir, cmovrr> (icond2ccSwap $cond), $r, $l, $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), (oty mOp:$t), oty:$f,
                            CCSIOp:$cond)),
             (cmovirrm<CMPIir, cmovrm> (icond2ccSwap $cond), $r, $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, (oty mOp:$f),
-                           CCSIOp:$cond)),
-            (cmovirrm<CMPIir, cmovrm> (icond2ccSwapInv $cond), $r, $l, $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, oty:$f, CCUIOp:$cond)),
             (cmovrr<cmovrr> (icond2cc $cond), (CMPUrr $l, $r), $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, (oty mOp:$t), oty:$f,
                            CCUIOp:$cond)),
             (cmovrm<cmovrm> (icond2cc $cond), (CMPUrr $l, $r), $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, (oty mOp:$f),
-                           CCUIOp:$cond)),
-            (cmovrm<cmovrm> (icond2ccInv $cond), (CMPUrr $l, $r), $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, oty:$f,
                            CCUIOp:$cond)),
             (cmovirrr<CMPUir, cmovrr> (icond2ccSwap $cond), $r, $l, $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), (oty mOp:$t), oty:$f,
                            CCUIOp:$cond)),
             (cmovirrm<CMPUir, cmovrm> (icond2ccSwap $cond), $r, $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, (oty mOp:$f),
-                           CCUIOp:$cond)),
-            (cmovirrm<CMPUir, cmovrm> (icond2ccSwapInv $cond), $r, $l, $f, $t)>;
 }
 multiclass SEL64CMPFm<ValueType oty, ValueType cty, SDPatternOperator Insn,
                       SDPatternOperator CMPir, SDPatternOperator CMPrr,
@@ -2292,8 +2271,6 @@ multiclass SEL64CMPFm<ValueType oty, ValueType cty, SDPatternOperator Insn,
             (cmovrr<cmovrr> (fcond2cc $cond), $l, $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, fpzero, (oty mOp:$t), oty:$f, cond:$cond)),
             (cmovrm<cmovrm, MOP> (fcond2cc $cond), $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, fpzero, oty:$t, (oty mOp:$f), cond:$cond)),
-            (cmovrm<cmovrm, MOP> (fcond2ccInv $cond), $l, $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, oty:$f, cond:$cond)),
             (cmovrr<cmovrr> (fcond2cc $cond), (CMPrr $l, $r), $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7fp:$r), oty:$t, oty:$f,
@@ -2338,8 +2315,6 @@ multiclass SEL32CMPIm<ValueType oty, Operand sub_oty, ValueType cty,
             (cmov32rr<cmovrr, sub_oty> (icond2cc $cond), $l, $t, $f)>;
   def : Pat<(oty (selectcc cty:$l, zero, (oty mOp:$t), oty:$f, CCSIOp:$cond)),
             (cmov32rm<cmovrm, sub_oty> (icond2cc $cond), $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, zero, oty:$t, (oty mOp:$f), CCSIOp:$cond)),
-            (cmov32rm<cmovrm, sub_oty> (icond2ccInv $cond), $l, $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, oty:$f, CCSIOp:$cond)),
             (cmov32rr<cmovrr, sub_oty>
                 (icond2cc $cond), (CMPIrr $l, $r), $t, $f)>;
@@ -2347,10 +2322,6 @@ multiclass SEL32CMPIm<ValueType oty, Operand sub_oty, ValueType cty,
                            CCSIOp:$cond)),
             (cmov32rm<cmovrm, sub_oty>
                 (icond2cc $cond), (CMPIrr $l, $r), $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, (oty mOp:$f),
-                           CCSIOp:$cond)),
-            (cmov32rm<cmovrm, sub_oty>
-                (icond2ccInv $cond), (CMPIrr $l, $r), $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, oty:$f,
                            CCSIOp:$cond)),
             (cmov32irrr<CMPIir, cmovrr, sub_oty>
@@ -2359,10 +2330,6 @@ multiclass SEL32CMPIm<ValueType oty, Operand sub_oty, ValueType cty,
                            CCSIOp:$cond)),
             (cmov32irrm<CMPIir, cmovrm, sub_oty>
                 (icond2ccSwap $cond), $r, $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, (oty mOp:$f),
-                           CCSIOp:$cond)),
-            (cmov32irrm<CMPIir, cmovrm, sub_oty>
-                (icond2ccSwapInv $cond), $r, $l, $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, oty:$f, CCUIOp:$cond)),
             (cmov32rr<cmovrr, sub_oty>
                 (icond2cc $cond), (CMPUrr $l, $r), $t, $f)>;
@@ -2370,10 +2337,6 @@ multiclass SEL32CMPIm<ValueType oty, Operand sub_oty, ValueType cty,
                            CCUIOp:$cond)),
             (cmov32rm<cmovrm, sub_oty>
                 (icond2cc $cond), (CMPUrr $l, $r), $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, cty:$r, oty:$t, (oty mOp:$f),
-                           CCUIOp:$cond)),
-            (cmov32rm<cmovrm, sub_oty>
-                (icond2ccInv $cond), (CMPUrr $l, $r), $f, $t)>;
   def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, oty:$f,
                            CCUIOp:$cond)),
             (cmov32irrr<CMPUir, cmovrr, sub_oty>
@@ -2382,10 +2345,6 @@ multiclass SEL32CMPIm<ValueType oty, Operand sub_oty, ValueType cty,
                            CCUIOp:$cond)),
             (cmov32irrm<CMPUir, cmovrm, sub_oty>
                 (icond2ccSwap $cond), $r, $l, $t, $f)>;
-  def : Pat<(oty (selectcc cty:$l, (cty simm7:$r), oty:$t, (oty mOp:$f),
-                           CCUIOp:$cond)),
-            (cmov32irrm<CMPUir, cmovrm, sub_oty>
-                (icond2ccSwapInv $cond), $r, $l, $f, $t)>;
 }
 multiclass SEL32CMPFm<ValueType oty, Operand sub_oty, ValueType cty,
                       SDPatternOperator Insn,
