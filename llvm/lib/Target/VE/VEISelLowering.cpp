@@ -1591,15 +1591,6 @@ const char *VETargetLowering::getTargetNodeName(unsigned Opcode) const {
     TARGET_NODE_CASE(Hi)
     TARGET_NODE_CASE(CALL)
     TARGET_NODE_CASE(RET_FLAG)
-    TARGET_NODE_CASE(CMPICC)
-    TARGET_NODE_CASE(CMPFCC)
-    TARGET_NODE_CASE(BRICC)
-    TARGET_NODE_CASE(BRXCC)
-    TARGET_NODE_CASE(BRFCC)
-    TARGET_NODE_CASE(SELECT)
-    TARGET_NODE_CASE(SELECT_ICC)
-    TARGET_NODE_CASE(SELECT_XCC)
-    TARGET_NODE_CASE(SELECT_FCC)
     TARGET_NODE_CASE(EQV)
     TARGET_NODE_CASE(XOR)
     TARGET_NODE_CASE(CMPI)
@@ -1657,16 +1648,6 @@ void VETargetLowering::computeKnownBitsForTargetNode
 
   switch (Op.getOpcode()) {
   default: break;
-  case VEISD::SELECT_ICC:
-  case VEISD::SELECT_XCC:
-  case VEISD::SELECT_FCC:
-    Known = DAG.computeKnownBits(Op.getOperand(1), Depth + 1);
-    Known2 = DAG.computeKnownBits(Op.getOperand(0), Depth + 1);
-
-    // Only known if known in both the LHS and RHS.
-    Known.One &= Known2.One;
-    Known.Zero &= Known2.Zero;
-    break;
   case VEISD::CMOV:
     // CMOV is a following instruction, so pick t and f and calculate KnownBits.
     //   res = CMOV comp, t, f, cond
