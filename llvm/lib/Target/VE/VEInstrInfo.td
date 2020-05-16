@@ -295,6 +295,7 @@ def KnownZExt : PatLeaf<(i64 I64:$src), [{
   return OpKnown.getMaxValue().getZExtValue() <= 0xFFFFFFFF;
 }]>;
 
+//===----------------------------------------------------------------------===//
 // Addressing modes.
 // SX-Aurora has following fields.
 //    sz: register or 0
@@ -321,16 +322,16 @@ def KnownZExt : PatLeaf<(i64 I64:$src), [{
 //    MEMriASX, MEMziASX    : simple AS format
 //    MEMriRRM, MEMziRRM    : AS format in RRM format
 //    MEMriHM, MEMziHM      : AS format in RRM format for host memory access
+//===----------------------------------------------------------------------===//
 
 def ADDRrri : ComplexPattern<iPTR, 3, "selectADDRrri", [frameindex], []>;
 def ADDRrii : ComplexPattern<iPTR, 3, "selectADDRrii", [frameindex], []>;
 def ADDRzri : ComplexPattern<iPTR, 3, "selectADDRzri", [], []>;
 def ADDRzii : ComplexPattern<iPTR, 3, "selectADDRzii", [], []>;
-// AS format:
 def ADDRri : ComplexPattern<iPTR, 2, "selectADDRri", [frameindex], []>;
 def ADDRzi : ComplexPattern<iPTR, 2, "selectADDRzi", [], []>;
-//
-// ASX assembly instrcution format:
+
+// AsmOperandClasses for addressing mode to parse instructions.
 def VEMEMrriAsmOperand : AsmOperandClass {
   let Name = "MEMrri";
   let ParserMethod = "parseMEMOperand";
@@ -347,6 +348,16 @@ def VEMEMziiAsmOperand : AsmOperandClass {
   let Name = "MEMzii";
   let ParserMethod = "parseMEMOperand";
 }
+def VEMEMriAsmOperand : AsmOperandClass {
+  let Name = "MEMri";
+  let ParserMethod = "parseMEMAsOperand";
+}
+def VEMEMziAsmOperand : AsmOperandClass {
+  let Name = "MEMzi";
+  let ParserMethod = "parseMEMAsOperand";
+}
+
+// Operand definitions for ASX addressing mode.
 def MEMrri : Operand<iPTR> {
   let PrintMethod = "printMemASXOperand";
   let MIOperandInfo = (ops ptr_rc, ptr_rc, i32imm);
@@ -367,15 +378,10 @@ def MEMzii : Operand<iPTR> {
   let MIOperandInfo = (ops i32imm /* = 0 */, i32imm, i32imm);
   let ParserMatchClass = VEMEMziiAsmOperand;
 }
-// AS assembly instrcution format:
-def VEMEMriAsmOperand : AsmOperandClass {
-  let Name = "MEMri";
-  let ParserMethod = "parseMEMAsOperand";
-}
-def VEMEMziAsmOperand : AsmOperandClass {
-  let Name = "MEMzi";
-  let ParserMethod = "parseMEMAsOperand";
-}
+
+// Operand definitions for AS addressing mode.
+//   AS format has different representations, so defines them.
+
 // AS generic assembly instruction format:
 def MEMriASX : Operand<iPTR> {
   let PrintMethod = "printMemASOperandASX";
@@ -387,6 +393,7 @@ def MEMziASX : Operand<iPTR> {
   let MIOperandInfo = (ops i32imm /* = 0 */, i32imm);
   let ParserMatchClass = VEMEMziAsmOperand;
 }
+
 // AS RRM style assembly instruction format:
 def MEMriRRM : Operand<iPTR> {
   let PrintMethod = "printMemASOperandRRM";
@@ -398,6 +405,7 @@ def MEMziRRM : Operand<iPTR> {
   let MIOperandInfo = (ops i32imm /* = 0 */, i32imm);
   let ParserMatchClass = VEMEMziAsmOperand;
 }
+
 // AS HM style assembly instruction format:
 def MEMriHM : Operand<iPTR> {
   let PrintMethod = "printMemASOperandHM";
