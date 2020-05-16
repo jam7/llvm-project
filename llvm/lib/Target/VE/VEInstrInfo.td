@@ -1319,14 +1319,12 @@ let isCodeGenOnly = 1 in defm AND32 : RRm<"and", 0x44, I32, i32, and>;
 
 // Section 8.5.2 - OR (OR)
 defm OR : RRm<"or", 0x45, I64, i64, or>;
-let isCodeGenOnly = 1 in defm OR32 : RRm<"or", 0x45, I32, i32, or>;
 
 // Section 8.5.3 - XOR (Exclusive OR)
 def xor_pat : PatFrags<(ops node:$lhs, node:$rhs),
                        [(xor node:$lhs, node:$rhs),
                         (XOR node:$lhs, node:$rhs)]>;
 defm XOR : RRm<"xor", 0x46, I64, i64, xor_pat>;
-let isCodeGenOnly = 1 in defm XOR32 : RRm<"xor", 0x46, I32, i32, xor_pat>;
 
 // Section 8.5.4 - EQV (Equivalence)
 defm EQV : RRm<"eqv", 0x47, I64, i64, EQV>;
@@ -1716,7 +1714,7 @@ let mayLoad = 1, mayStore = 0, hasSideEffects = 1, isTrap = 1 in {
 //===----------------------------------------------------------------------===//
 
 // Small immediates.
-def : Pat<(i32 simm7:$val), (OR32im (LO7 $val), 0)>;
+def : Pat<(i32 simm7:$val), (EXTRACT_SUBREG (ORim (LO7 $val), 0), sub_i32)>;
 def : Pat<(i64 simm7:$val), (ORim (LO7 $val), 0)>;
 // Medium immediates.
 def : Pat<(i32 simm32:$val), (LEA32zii 0, 0, (LO32 $val))>;
