@@ -14,8 +14,8 @@ define signext i8 @func1(i8 signext %a) {
 ; CHECK:       .LBB{{[0-9]+}}_1:
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK:       .LBB{{[0-9]+}}_3:
-; CHECK-NEXT:    sla.w.sx %s0, %s0, 24
-; CHECK-NEXT:    sra.w.sx %s0, %s0, 24
+; CHECK-NEXT:    sll %s0, %s0, 56
+; CHECK-NEXT:    sra.l %s0, %s0, 56
 ; CHECK-NEXT:    or %s11, 0, %s9
 entry:
   %cmp = icmp sgt i8 %a, 0

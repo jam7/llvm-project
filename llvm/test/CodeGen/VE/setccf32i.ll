@@ -51,7 +51,6 @@ define zeroext i1 @setccone(float, float) {
 ; CHECK-NEXT:    fcmp.s %s1, %s0, %s1
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK-NEXT:    cmov.s.ne %s0, (63)0, %s1
-; CHECK-NEXT:    # kill: def $sw0 killed $sw0 killed $sx0
 ; CHECK-NEXT:    or %s11, 0, %s9
 ; NONNS-LABEL: setccone:
 ; NONNS:       .LBB{{[0-9]+}}_2:
@@ -59,7 +58,6 @@ define zeroext i1 @setccone(float, float) {
 ; NONNS-NEXT:    fcmp.s %s1, %s0, %s1
 ; NONNS-NEXT:    or %s0, 0, (0)1
 ; NONNS-NEXT:    cmov.s.ne %s0, (63)0, %s1
-; NONNS-NEXT:    # kill: def $sw0 killed $sw0 killed $sx0
 ; NONNS-NEXT:    or %s11, 0, %s9
   %3 = fcmp one float %0, 5.0
   ret i1 %3
@@ -121,7 +119,6 @@ define zeroext i1 @setccord(float, float) {
 ; CHECK-NEXT:    fcmp.s %s1, %s0, %s0
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK-NEXT:    cmov.s.num %s0, (63)0, %s1
-; CHECK-NEXT:    # kill: def $sw0 killed $sw0 killed $sx0
 ; CHECK-NEXT:    or %s11, 0, %s9
   %3 = fcmp ord float %0, 0.0
   ret i1 %3
@@ -133,7 +130,6 @@ define zeroext i1 @setccuno(float, float) {
 ; CHECK-NEXT:    fcmp.s %s1, %s0, %s0
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK-NEXT:    cmov.s.nan %s0, (63)0, %s1
-; CHECK-NEXT:    # kill: def $sw0 killed $sw0 killed $sx0
 ; CHECK-NEXT:    or %s11, 0, %s9
   %3 = fcmp uno float %0, 0.0
   ret i1 %3

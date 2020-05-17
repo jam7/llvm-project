@@ -6,8 +6,8 @@
 define void @test(i32 signext %0) {
 ; CHECK-LABEL: test:
 ; CHECK:       .LBB0_2:
-; CHECK-NEXT:    adds.w.sx %s2, %s0, (0)1
-; CHECK-NEXT:    lea %s0, 15(, %s2)
+; CHECK-NEXT:    or %s2, 0, %s0
+; CHECK-NEXT:    lea %s0, 15(, %s0)
 ; CHECK-NEXT:    and %s0, -16, %s0
 ; CHECK-NEXT:    lea %s1, __llvm_grow_stack@lo
 ; CHECK-NEXT:    and %s1, %s1, (32)0

@@ -7,7 +7,6 @@ define x86_regcallcc <512 x i32> @mulbrdv512i32(<512 x i32>, i32) {
 ; FIXME: better code.
 ; FIXME-CHECK-LABEL: mulbrdv512i32:
 ; FIXME-CHECK:       .LBB{{[0-9]+}}_2:
-; FIXME-CHECK-NEXT:  # kill: def $sw0 killed $sw0 def $sx0
 ; FIXME-CHECK-NEXT:  and %s34, %s0, (32)0
 ; FIXME-CHECK-NEXT:  sll %s35, %s0, 32
 ; FIXME-CHECK-NEXT:  lea %s36, 256
@@ -25,7 +24,6 @@ define x86_regcallcc <512 x i32> @mulbrdv512i32(<512 x i32>, i32) {
 define x86_regcallcc <512 x float> @mulbrdv512f32(<512 x float>, float) {
 ; CHECK-LABEL: mulbrdv512f32:
 ; CHECK:       .LBB{{[0-9]+}}_2:
-; CHECK-NEXT:  # kill: def $sf0 killed $sf0 def $sx0
 ; CHECK-NEXT:  srl %s1, %s0, 32
 ; CHECK-NEXT:  or %s0, %s0, %s1
 ; CHECK-NEXT:  lea %s1, 256
