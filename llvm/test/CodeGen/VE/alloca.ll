@@ -3,7 +3,7 @@
 @buf = external global i8*, align 8
 
 ; Function Attrs: nounwind
-define void @test(i32) {
+define void @test(i32 signext %0) {
 ; CHECK-LABEL: test:
 ; CHECK:       .LBB0_2:
 ; CHECK-NEXT:    adds.w.sx %s2, %s0, (0)1

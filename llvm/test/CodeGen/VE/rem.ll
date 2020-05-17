@@ -25,7 +25,7 @@ define i64 @remi64(i64 %a, i64 %b) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remi32(i32 %a, i32 %b) {
+define signext i32 @remi32(i32 signext %a, i32 signext %b) {
 ; CHECK-LABEL: remi32:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    divs.w.sx %s2, %s0, %s1
@@ -61,7 +61,7 @@ define i64 @remu64(i64 %a, i64 %b) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remu32(i32 %a, i32 %b) {
+define zeroext i32 @remu32(i32 zeroext %a, i32 zeroext %b) {
 ; CHECK-LABEL: remu32:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    divu.w %s2, %s0, %s1
@@ -157,7 +157,7 @@ define i64 @remi64ri(i64 %a) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remi32ri(i32 %a) {
+define signext i32 @remi32ri(i32 signext %a) {
 ; CHECK-LABEL: remi32ri:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    adds.w.sx %s1, %s0, (0)1
@@ -200,7 +200,7 @@ define i64 @remu64ri(i64 %a) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remu32ri(i32 %a) {
+define zeroext i32 @remu32ri(i32 zeroext %a) {
 ; CHECK-LABEL: remu32ri:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    adds.w.zx %s1, %s0, (0)1
@@ -244,7 +244,7 @@ define i64 @remi64li(i64 %a, i64 %b) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remi32li(i32 %a, i32 %b) {
+define signext i32 @remi32li(i32 signext %a, i32 signext %b) {
 ; CHECK-LABEL: remi32li:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    divs.w.sx %s0, 3, %s1
@@ -284,7 +284,7 @@ define i64 @remu64li(i64 %a, i64 %b) {
 }
 
 ; Function Attrs: norecurse nounwind readnone
-define i32 @remu32li(i32 %a, i32 %b) {
+define zeroext i32 @remu32li(i32 zeroext %a, i32 zeroext %b) {
 ; CHECK-LABEL: remu32li:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    divu.w %s0, 3, %s1

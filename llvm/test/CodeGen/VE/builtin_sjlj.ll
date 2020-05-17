@@ -5,7 +5,7 @@
 @buf = common global [1 x %struct.__jmp_buf_tag] zeroinitializer, align 8
 
 ; Function Attrs: noinline nounwind optnone
-define i32 @t_setjmp() {
+define signext i32 @t_setjmp() {
 ; CHECK-LABEL: t_setjmp:
 ; CHECK:       lea %s0, buf@lo
 ; CHECK-NEXT:  and %s0, %s0, (32)0
