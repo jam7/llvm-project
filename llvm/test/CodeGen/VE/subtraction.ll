@@ -155,6 +155,7 @@ define i128 @funci128s(i128 %0) {
 ; CHECK-NEXT:    srl %s0, %s0, 63
 ; CHECK-NEXT:    lea %s1, -1(%s0, %s1)
 ; CHECK-NEXT:    or %s0, 0, %s2
+; CHECK-NEXT:    or %s11, 0, %s9
   %2 = add nsw i128 %0, -5
   ret i128 %2
 }
@@ -206,6 +207,7 @@ define i128 @funci128z(i128 %0) {
 ; CHECK-NEXT:    srl %s0, %s0, 63
 ; CHECK-NEXT:    lea %s1, -1(%s0, %s1)
 ; CHECK-NEXT:    or %s0, 0, %s2
+; CHECK-NEXT:    or %s11, 0, %s9
   %2 = add i128 %0, -5
   ret i128 %2
 }
@@ -227,6 +229,7 @@ define i128 @funci128_2(i128 %0) {
 ; CHECK-NEXT:    srl %s0, %s0, 63
 ; CHECK-NEXT:    lea %s1, -1(%s0, %s1)
 ; CHECK-NEXT:    or %s0, 0, %s2
+; CHECK-NEXT:    or %s11, 0, %s9
   %2 = add nsw i128 %0, -2147483648
   ret i128 %2
 }

@@ -54,6 +54,7 @@ define i128 @func128(i128 %a, i128 %b) {
 ; CHECK-NEXT:    or %s2, 0, %s5
 ; CHECK-NEXT:    or %s3, 0, %s4
 ; CHECK-NEXT:    bsic %s10, (, %s12)
+; CHECK-NEXT:    or %s11, 0, %s9
   %r = mul nsw i128 %b, %a
   ret i128 %r
 }
@@ -110,6 +111,7 @@ define i128 @func128z(i128 %a, i128 %b) {
 ; CHECK-NEXT:    or %s2, 0, %s5
 ; CHECK-NEXT:    or %s3, 0, %s4
 ; CHECK-NEXT:    bsic %s10, (, %s12)
+; CHECK-NEXT:    or %s11, 0, %s9
   %r = mul i128 %b, %a
   ret i128 %r
 }
@@ -164,6 +166,7 @@ define i128 @funci128(i128 %a) {
 ; CHECK-NEXT:    or %s2, 5, (0)1
 ; CHECK-NEXT:    or %s3, 0, (0)1
 ; CHECK-NEXT:    bsic %s10, (, %s12)
+; CHECK-NEXT:    or %s11, 0, %s9
   %r = mul nsw i128 %a, 5
   ret i128 %r
 }
@@ -216,6 +219,7 @@ define i128 @funci128z(i128 %a) {
 ; CHECK-NEXT:    or %s2, 5, (0)1
 ; CHECK-NEXT:    or %s3, 0, (0)1
 ; CHECK-NEXT:    bsic %s10, (, %s12)
+; CHECK-NEXT:    or %s11, 0, %s9
   %r = mul i128 %a, 5
   ret i128 %r
 }
@@ -246,6 +250,7 @@ define i128 @funci128_2(i128 %a) {
 ; CHECK-NEXT:    sll %s1, %s1, 31
 ; CHECK-NEXT:    or %s1, %s1, %s2
 ; CHECK-NEXT:    sll %s0, %s0, 31
+; CHECK-NEXT:    or %s11, 0, %s9
   %r = shl nsw i128 %a, 31
   ret i128 %r
 }

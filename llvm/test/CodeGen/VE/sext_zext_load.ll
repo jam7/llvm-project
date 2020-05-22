@@ -37,6 +37,8 @@ define i128 @func4() {
 ; CHECK-LABEL: func4:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld1b.sx %s0, 191(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i8, align 1
   %a.val = load i8, i8* %a, align 1
   %a.conv = sext i8 %a.val to i128
@@ -82,6 +84,8 @@ define i128 @func8() {
 ; CHECK-LABEL: func8:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld1b.sx %s0, 191(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i8, align 1
   %a.val = load i8, i8* %a, align 1
   %a.conv = sext i8 %a.val to i128
@@ -125,6 +129,8 @@ define i128 @func12() {
 ; CHECK-LABEL: func12:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld1b.zx %s0, 191(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i8, align 1
   %a.val = load i8, i8* %a, align 1
   %a.conv = zext i8 %a.val to i128
@@ -168,6 +174,8 @@ define i128 @func16() {
 ; CHECK-LABEL: func16:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld1b.zx %s0, 191(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i8, align 1
   %a.val = load i8, i8* %a, align 1
   %a.conv = zext i8 %a.val to i128
@@ -200,6 +208,8 @@ define i128 @func19() {
 ; CHECK-LABEL: func19:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld2b.sx %s0, 190(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i16, align 2
   %a.val = load i16, i16* %a, align 2
   %a.conv = sext i16 %a.val to i128
@@ -231,6 +241,8 @@ define i128 @func22() {
 ; CHECK-LABEL: func22:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld2b.sx %s0, 190(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i16, align 2
   %a.val = load i16, i16* %a, align 2
   %a.conv = sext i16 %a.val to i128
@@ -263,6 +275,8 @@ define i128 @func25() {
 ; CHECK-LABEL: func25:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld2b.zx %s0, 190(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i16, align 2
   %a.val = load i16, i16* %a, align 2
   %a.conv = zext i16 %a.val to i128
@@ -294,6 +308,8 @@ define i128 @func28() {
 ; CHECK-LABEL: func28:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld2b.zx %s0, 190(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i16, align 2
   %a.val = load i16, i16* %a, align 2
   %a.conv = zext i16 %a.val to i128
@@ -315,6 +331,8 @@ define i128 @func30() {
 ; CHECK-LABEL: func30:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ldl.sx %s0, 188(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i32, align 4
   %a.val = load i32, i32* %a, align 4
   %a.conv = sext i32 %a.val to i128
@@ -336,6 +354,8 @@ define i128 @func32() {
 ; CHECK-LABEL: func32:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ldl.sx %s0, 188(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i32, align 4
   %a.val = load i32, i32* %a, align 4
   %a.conv = sext i32 %a.val to i128
@@ -357,6 +377,8 @@ define i128 @func34() {
 ; CHECK-LABEL: func34:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ldl.zx %s0, 188(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i32, align 4
   %a.val = load i32, i32* %a, align 4
   %a.conv = zext i32 %a.val to i128
@@ -378,6 +400,8 @@ define i128 @func36() {
 ; CHECK-LABEL: func36:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ldl.zx %s0, 188(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i32, align 4
   %a.val = load i32, i32* %a, align 4
   %a.conv = zext i32 %a.val to i128
@@ -498,6 +522,8 @@ define signext i128 @func46() {
 ; CHECK-LABEL: func46:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld1b.zx %s0, 191(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i1, align 1
   %a.val = load i1, i1* %a, align 1
   %a.conv = zext i1 %a.val to i128
@@ -508,6 +534,8 @@ define i128 @func47() {
 ; CHECK-LABEL: func47:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld %s0, 184(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i64, align 8
   %a.val = load i64, i64* %a, align 8
   %a.conv = sext i64 %a.val to i128
@@ -518,6 +546,8 @@ define i128 @func48() {
 ; CHECK-LABEL: func48:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld %s0, 184(, %s11)
+; CHECK-NEXT:    sra.l %s1, %s0, 63
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i64, align 8
   %a.val = load i64, i64* %a, align 8
   %a.conv = sext i64 %a.val to i128
@@ -528,6 +558,8 @@ define i128 @func49() {
 ; CHECK-LABEL: func49:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld %s0, 184(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i64, align 8
   %a.val = load i64, i64* %a, align 8
   %a.conv = zext i64 %a.val to i128
@@ -538,6 +570,8 @@ define i128 @func50() {
 ; CHECK-LABEL: func50:
 ; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    ld %s0, 184(, %s11)
+; CHECK-NEXT:    or %s1, 0, (0)1
+; CHECK-NEXT:    or %s11, 0, %s9
   %a = alloca i64, align 8
   %a.val = load i64, i64* %a, align 8
   %a.conv = zext i64 %a.val to i128

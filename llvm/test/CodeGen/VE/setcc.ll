@@ -6,6 +6,7 @@ define zeroext i1 @setccf64(double, double) {
 ; CHECK-NEXT:    fcmp.d %s1, %s0, %s1
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK-NEXT:    cmov.d.gt %s0, (63)0, %s1
+; CHECK-NEXT:    or %s11, 0, %s9
   %3 = fcmp ogt double %0, %1
   ret i1 %3
 }
@@ -16,6 +17,7 @@ define zeroext i1 @setccf32(float, float) {
 ; CHECK-NEXT:    fcmp.s %s1, %s0, %s1
 ; CHECK-NEXT:    or %s0, 0, (0)1
 ; CHECK-NEXT:    cmov.s.gt %s0, (63)0, %s1
+; CHECK-NEXT:    or %s11, 0, %s9
   %3 = fcmp ogt float %0, %1
   ret i1 %3
 }

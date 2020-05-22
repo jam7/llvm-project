@@ -3,7 +3,7 @@
 ; Function Attrs: norecurse nounwind readnone
 define i64 @test(i32, i32) {
 ; CHECK-LABEL: test:
-; CHECK:       .LBB0_2:
+; CHECK:       .LBB{{[0-9]+}}_2:
 ; CHECK-NEXT:    sll %s0, %s0, 32
 ; CHECK-NEXT:    and %s1, %s1, (32)0
 ; CHECK-NEXT:    or %s0, %s0, %s1
