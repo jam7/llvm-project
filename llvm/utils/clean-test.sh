@@ -25,7 +25,7 @@ case $1 in
 esac
 
 for i in "$@"; do
-    sed -i -e '/^attributes #.*/d' \
+    sed -e '/^attributes #.*/d' \
         -e 's/ #[^ ][^ ]*//' \
         -e 's/ local_unnamed_addr//' \
         -e 's/ dso_local//' \
@@ -35,6 +35,6 @@ for i in "$@"; do
         -e '/^; ModuleID/d' \
         -e '/^source_filename = /d' \
         -e '/^target datalayout =/d' \
-        -e '/^target triple =/d' $i
-    sed -i -e '/^$/N;/^\n$/D' $i
+        -e '/^target triple =/d' -i "" $i
+    sed -e '/^$/N;/^\n$/D' -i "" $i
 done
