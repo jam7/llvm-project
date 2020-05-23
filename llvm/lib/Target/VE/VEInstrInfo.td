@@ -1315,7 +1315,6 @@ let cw = 1 in defm MINSL : RRm<"mins.l", 0x68, I64, i64, smin>;
 
 // Section 8.5.1 - AND (AND)
 defm AND : RRm<"and", 0x44, I64, i64, and>;
-let isCodeGenOnly = 1 in defm AND32 : RRm<"and", 0x44, I32, i32, and>;
 
 // Section 8.5.2 - OR (OR)
 defm OR : RRm<"or", 0x45, I64, i64, or>;
@@ -1328,7 +1327,6 @@ defm XOR : RRm<"xor", 0x46, I64, i64, xor_pat>;
 
 // Section 8.5.4 - EQV (Equivalence)
 defm EQV : RRm<"eqv", 0x47, I64, i64, EQV>;
-let isCodeGenOnly = 1 in defm EQV32 : RRm<"eqv", 0x47, I32, i32, EQV>;
 
 // Section 8.5.5 - NND (Negate AND)
 defm NND : RRNNDm<"nnd", 0x54, I64, i64>;
@@ -1644,11 +1642,12 @@ def : Pat<(i32 (atomic_swap_8 i64:$src, i32:$new)),
                 (ANDri $src, -4),
                 0,
                 (SLAWSXmr !add(63, 64),
-                          (AND32ri (EXTRACT_SUBREG $src, sub_i32), 3)),
+                          (EXTRACT_SUBREG (ANDri $src, 3), sub_i32)),
                 (SLAWSXrr $new,
-                          (SLAWSXri (AND32ri (EXTRACT_SUBREG $src, sub_i32), 3), 3))),
+                          (SLAWSXri (EXTRACT_SUBREG (ANDri $src, 3), sub_i32),
+                                    3))),
               (SUBSWSXir 24,
-                (SLAWSXri (AND32ri (EXTRACT_SUBREG $src, sub_i32), 3), 3))),
+                (SLAWSXri (EXTRACT_SUBREG (ANDri $src, 3), sub_i32), 3))),
             24
           )>;
 // def : Pat<(i32 (atomic_swap_16 ADDRri:$src, i32:$new)),
