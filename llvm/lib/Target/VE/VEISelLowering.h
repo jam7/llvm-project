@@ -146,6 +146,7 @@ public:
   SDValue PerformDAGCombine(SDNode *N, DAGCombinerInfo &DCI) const override;
 
   SDValue combineExtBoolTrunc(SDNode *N, DAGCombinerInfo &DCI) const;
+  SDValue combineTRUNCATE(SDNode *N, DAGCombinerInfo &DCI) const;
   SDValue combineSetCC(SDNode *N, DAGCombinerInfo &DCI) const;
   SDValue combineSelectCC(SDNode *N, DAGCombinerInfo &DCI) const;
   SDValue combineSelect(SDNode *N, DAGCombinerInfo &DCI) const;

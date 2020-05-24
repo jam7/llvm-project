@@ -1750,8 +1750,10 @@ def : Pat<(sext_inreg I64:$src, i16),
           (SRALri (SLLri $src, 48), 48)>;
 
 // Cast to i32
-def : Pat<(i32 (trunc i64:$src)),
+def : Pat<(i32 (trunc KnownZExt:$src)),
           (EXTRACT_SUBREG $src, sub_i32)>;
+def : Pat<(i32 (trunc i64:$src)),
+          (EXTRACT_SUBREG (ANDrm $src, !add(32, 64)), sub_i32)>;
 def : Pat<(i32 (fp_to_sint I64:$reg)), (CVTWDSXr RD_RZ, $reg)>;
 def : Pat<(i32 (fp_to_sint F32:$reg)), (CVTWSSXr RD_RZ, $reg)>;
 def : Pat<(i32 (fp_to_sint f128:$sy)), (CVTWDSXr RD_RZ, (CVTDQr $sy))>;

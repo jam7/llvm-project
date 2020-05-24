@@ -648,7 +648,8 @@ define signext i8 @test_atomic_compare_exchange_1(i8, i8) {
 ; CHECK-NEXT:    and %s0, %s0, (56)0
 ; CHECK-NEXT:    sla.w.sx %s0, %s0, %s4
 ; CHECK-NEXT:    sla.w.sx %s4, (56)0, %s4
-; CHECK-NEXT:    nnd %s7, %s4, %s5
+; CHECK-NEXT:    nnd %s4, %s4, %s5
+; CHECK-NEXT:    and %s7, %s4, (32)0
 ; CHECK-NEXT:  .LBB{{[0-9]+}}_1: # %partword.cmpxchg.loop
 ; CHECK-NEXT:    # =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    or %s5, 0, %s7
@@ -693,7 +694,8 @@ define signext i16 @test_atomic_compare_exchange_2(i16, i16) {
 ; CHECK-NEXT:    and %s0, %s0, (48)0
 ; CHECK-NEXT:    sla.w.sx %s0, %s0, %s4
 ; CHECK-NEXT:    sla.w.sx %s4, (48)0, %s4
-; CHECK-NEXT:    nnd %s7, %s4, %s5
+; CHECK-NEXT:    nnd %s4, %s4, %s5
+; CHECK-NEXT:    and %s7, %s4, (32)0
 ; CHECK-NEXT:  .LBB{{[0-9]+}}_1: # %partword.cmpxchg.loop
 ; CHECK-NEXT:    # =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    or %s5, 0, %s7
