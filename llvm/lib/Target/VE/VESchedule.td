@@ -1,4 +1,4 @@
-//===-- VESchedule.td - Describe the VE Itineries ----------*- tablegen -*-===//
+//===-- VESchedule.td - VE Scheduling Definitions ----------*- tablegen -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -9,21 +9,58 @@
 //
 //===----------------------------------------------------------------------===//
 
-def WriteI         : SchedWrite; // ALU
+//===----------------------------------------------------------------------===//
+// Sched definitions for integer pipeline instructions
+//
+// Basic ALU operation.
+def WriteALU : SchedWrite;
+def ReadALU : SchedRead;
 
-/*
-def ALU_FU  : FuncUnit;
-def LDST_FU : FuncUnit;
+// Multiplys.
+def WriteMUL : SchedWrite;
 
-def VE_ALU  : InstrItinClass;
-def VE_LD   : InstrItinClass;
-def VE_ST   : InstrItinClass;
+// Divisions.
+def WriteDIV32 : SchedWrite;
+def WriteDIV64 : SchedWrite;
 
-def VEItinerary : ProcessorItineraries<[ALU_FU, LDST_FU],[],[
-  // InstrItinData<VE_LD,   [InstrStage<1, [LDST_FU]>]>,
-  // InstrItinData<VE_ST,   [InstrStage<1, [LDST_FU]>]>,
-  //   InstrItinData<VE_LDSW, [InstrStage<2, [LDST_FU]>]>,
-  //   InstrItinData<VE_STSW, [InstrStage<2, [LDST_FU]>]>,
-  InstrItinData<VE_ALU,  [InstrStage<1, [ALU_FU]>]>
-]>;
-*/
+// Loads/Stores.
+def WriteLD : SchedWrite;
+def WriteST : SchedWrite;
+
+// Branches.
+def WriteBR : SchedWrite;
+
+// Noop.
+def WriteNOP : SchedWrite;
+
+//===----------------------------------------------------------------------===//
+// Sched definitions for floating-point and neon instructions
+//
+// ALU operations.
+def WriteFPALU : SchedWrite;
+def WriteFPALU128 : SchedWrite;
+
+// Division
+def WriteFPDIV32 : SchedWrite;
+def WriteFPDIV64 : SchedWrite;
+
+// Vector load and stores
+def WriteVLD : SchedWrite;
+def WriteVST : SchedWrite;
+
+// Define TII for use in SchedVariant Predicates.
+def : PredicateProlog<[{
+  const VEInstrInfo *TII =
+    static_cast<const VEInstrInfo*>(SchedModel->getInstrInfo());
+  (void)TII;
+  const VESubtarget *STI =
+    static_cast<const VESubtarget*>(SchedModel->getSubtargetInfo());
+  (void)STI;
+}]>;
+
+def IsPredicatedPred : SchedPredicate<[{TII->isPredicated(*MI)}]>;
+
+//===----------------------------------------------------------------------===//
+// Processor instruction itineraries.
+
+include "VESchedAurora.td"

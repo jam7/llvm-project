@@ -34,7 +34,6 @@ def IsNoNaNs : Predicate<"TM.Options.NoNaNsFPMath">;
 
 include "VERegisterInfo.td"
 include "VECallingConv.td"
-include "VESchedule.td"
 include "VEInstrInfo.td"
 
 def VEInstrInfo : InstrInfo;
@@ -64,24 +63,17 @@ def VE : Target {
   let AllowRegisterRenaming = 1;
 }
 
-include "VESchedAurora.td"
+//===----------------------------------------------------------------------===//
+// ARM schedules.
+//===----------------------------------------------------------------------===//
+
+include "VESchedule.td"
+
+//===----------------------------------------------------------------------===//
+// ARM processors
 
 def ProcAurora : SubtargetFeature<"aurora", "NECProcFamily", "Aurora",
                                    "NEC SX-Aurora processors", [
                                    ]>;
 
 def : ProcessorModel<"aurora", AuroraModel, [ProcAurora]>;
-
-
-/*
-//===----------------------------------------------------------------------===//
-// VE processors supported.
-//===----------------------------------------------------------------------===//
-
-class Proc<string Name, list<SubtargetFeature> Features>
- : Processor<Name, NoItineraries, Features>;
-
-// def : Proc<"ve",             []>;
-// def : Processor<"ve", VEItinerary, []>;
-// def : ProcessorModel<"ve", VESchedModel, []>;
-*/
