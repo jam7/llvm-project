@@ -236,14 +236,14 @@ public:
   bool isMEMzi() const { return Kind == k_MemoryZeroImm; }
   bool isCCOp() const { return Kind == k_CCOp; }
   bool isRDOp() const { return Kind == k_RDOp; }
-  bool isSImm7() {
+  bool isUImm0to2() {
     if (!isImm())
       return false;
 
     // Constant case
     if (const MCConstantExpr *ConstExpr = dyn_cast<MCConstantExpr>(Imm.Val)) {
       int64_t Value = ConstExpr->getValue();
-      return isInt<7>(Value);
+      return Value >= 0 && Value < 3;
     }
     return false;
   }
@@ -313,14 +313,14 @@ public:
     }
     return false;
   }
-  bool isUImm0to2() {
+  bool isSImm7() {
     if (!isImm())
       return false;
 
     // Constant case
     if (const MCConstantExpr *ConstExpr = dyn_cast<MCConstantExpr>(Imm.Val)) {
       int64_t Value = ConstExpr->getValue();
-      return Value >= 0 && Value < 3;
+      return isInt<7>(Value);
     }
     return false;
   }
@@ -492,7 +492,7 @@ public:
     addExpr(Inst, Expr);
   }
 
-  void addSImm7Operands(MCInst &Inst, unsigned N) const {
+  void addUImm0to2Operands(MCInst &Inst, unsigned N) const {
     addImmOperands(Inst, N);
   }
 
@@ -520,7 +520,7 @@ public:
     addImmOperands(Inst, N);
   }
 
-  void addUImm0to2Operands(MCInst &Inst, unsigned N) const {
+  void addSImm7Operands(MCInst &Inst, unsigned N) const {
     addImmOperands(Inst, N);
   }
 
