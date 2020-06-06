@@ -89,50 +89,50 @@ def GetVL : SDNodeXForm<imm, [{
 */
 
 def icond2cc : SDNodeXForm<cond, [{
-  VECC::CondCode VECC = IntCondCode2ICC(N->get());
+  VECC::CondCode VECC = intCondCode2Icc(N->get());
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def icond2ccSwap : SDNodeXForm<cond, [{
   ISD::CondCode CC = getSetCCSwappedOperands(N->get());
-  VECC::CondCode VECC = IntCondCode2ICC(CC);
+  VECC::CondCode VECC = intCondCode2Icc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def icond2ccInv : SDNodeXForm<cond, [{
   ISD::CondCode CC = ISD::GlobalISel::getSetCCInverse(N->get(), true);
-  VECC::CondCode VECC = IntCondCode2ICC(CC);
+  VECC::CondCode VECC = intCondCode2Icc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def icond2ccSwapInv : SDNodeXForm<cond, [{
   ISD::CondCode CC = getSetCCSwappedOperands(N->get());
   CC = ISD::GlobalISel::getSetCCInverse(CC, true);
-  VECC::CondCode VECC = IntCondCode2ICC(CC);
+  VECC::CondCode VECC = intCondCode2Icc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def fcond2cc : SDNodeXForm<cond, [{
-  VECC::CondCode VECC = FPCondCode2FCC(N->get());
+  VECC::CondCode VECC = fpCondCode2Fcc(N->get());
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def fcond2ccSwap : SDNodeXForm<cond, [{
   ISD::CondCode CC = getSetCCSwappedOperands(N->get());
-  VECC::CondCode VECC = FPCondCode2FCC(CC);
+  VECC::CondCode VECC = fpCondCode2Fcc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def fcond2ccInv : SDNodeXForm<cond, [{
   ISD::CondCode CC = ISD::GlobalISel::getSetCCInverse(N->get(), false);
-  VECC::CondCode VECC = FPCondCode2FCC(CC);
+  VECC::CondCode VECC = fpCondCode2Fcc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
 def fcond2ccSwapInv : SDNodeXForm<cond, [{
   ISD::CondCode CC = getSetCCSwappedOperands(N->get());
   CC = ISD::GlobalISel::getSetCCInverse(CC, false);
-  VECC::CondCode VECC = FPCondCode2FCC(CC);
+  VECC::CondCode VECC = fpCondCode2Fcc(CC);
   return CurDAG->getTargetConstant(VECC, SDLoc(N), MVT::i32);
 }]>;
 
