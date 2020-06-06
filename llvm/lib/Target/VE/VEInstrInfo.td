@@ -145,6 +145,15 @@ def CCOP : SDNodeXForm<imm, [{
 // Feature predicates.
 //===----------------------------------------------------------------------===//
 
+// zero
+def ZeroAsmOperand : AsmOperandClass {
+  let Name = "Zero";
+}
+def zero : Operand<i32>, PatLeaf<(imm), [{
+    return N->getSExtValue() == 0; }]> {
+  let ParserMatchClass = ZeroAsmOperand;
+}
+
 // uimm0to2 - Special immediate value represents 0, 1, and 2.
 def UImm0to2AsmOperand : AsmOperandClass {
   let Name = "UImm0to2";
@@ -227,13 +236,6 @@ def mimm : Operand<i32>, PatLeaf<(imm), [{
     return isMImmVal(getImmVal(N)); }], MIMM> {
   let ParserMatchClass = MImmAsmOperand;
   let PrintMethod = "printMImmOperand";
-}
-
-// zero
-def ZeroAsmOperand : AsmOperandClass { let Name = "Zero"; }
-def zero : Operand<i32>, PatLeaf<(imm), [{
-    return N->getSExtValue() == 0; }]> {
-  let ParserMatchClass = ZeroAsmOperand;
 }
 
 // simm7fp - Generic fp immediate value.
