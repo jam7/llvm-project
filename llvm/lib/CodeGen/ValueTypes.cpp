@@ -106,6 +106,18 @@ bool EVT::isExtended2048BitVector() const {
   return isExtendedVector() && getExtendedSizeInBits() == 2048;
 }
 
+bool EVT::isExtended4096BitVector() const {
+  return isExtendedVector() && getExtendedSizeInBits() == 4096;
+}
+
+bool EVT::isExtended8192BitVector() const {
+  return isExtendedVector() && getExtendedSizeInBits() == 8192;
+}
+
+bool EVT::isExtended16384BitVector() const {
+  return isExtendedVector() && getExtendedSizeInBits() == 16384;
+}
+
 bool EVT::isExtendedFixedLengthVector() const {
   return isExtendedVector() && isa<FixedVectorType>(LLVMTy);
 }
@@ -291,6 +303,12 @@ Type *EVT::getTypeForEVT(LLVMContext &Context) const {
     return FixedVectorType::get(Type::getInt64Ty(Context), 16);
   case MVT::v32i64:
     return FixedVectorType::get(Type::getInt64Ty(Context), 32);
+  case MVT::v64i64:
+    return FixedVectorType::get(Type::getInt64Ty(Context), 64);
+  case MVT::v128i64:
+    return FixedVectorType::get(Type::getInt64Ty(Context), 128);
+  case MVT::v256i64:
+    return FixedVectorType::get(Type::getInt64Ty(Context), 256);
   case MVT::v1i128:
     return FixedVectorType::get(Type::getInt128Ty(Context), 1);
   case MVT::v2f16:
@@ -365,6 +383,12 @@ Type *EVT::getTypeForEVT(LLVMContext &Context) const {
     return FixedVectorType::get(Type::getDoubleTy(Context), 16);
   case MVT::v32f64:
     return FixedVectorType::get(Type::getDoubleTy(Context), 32);
+  case MVT::v64f64:
+    return FixedVectorType::get(Type::getDoubleTy(Context), 64);
+  case MVT::v128f64:
+    return FixedVectorType::get(Type::getDoubleTy(Context), 128);
+  case MVT::v256f64:
+    return FixedVectorType::get(Type::getDoubleTy(Context), 256);
   case MVT::nxv1i1:
     return ScalableVectorType::get(Type::getInt1Ty(Context), 1);
   case MVT::nxv2i1:
