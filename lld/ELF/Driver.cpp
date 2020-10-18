@@ -159,6 +159,7 @@ static std::tuple<ELFKind, uint16_t, uint8_t> parseEmulation(StringRef emul) {
           .Case("elf_i386", {ELF32LEKind, EM_386})
           .Case("elf_iamcu", {ELF32LEKind, EM_IAMCU})
           .Case("elf64_sparc", {ELF64BEKind, EM_SPARCV9})
+          .Case("elf64ve", {ELF64LEKind, EM_VE})
           .Default({ELFNoneKind, EM_NONE});
 
   if (ret.first == ELFNoneKind)
@@ -887,7 +888,7 @@ static bool getIsRela(opt::InputArgList &args) {
   // Otherwise use the psABI defined relocation entry format.
   uint16_t m = config->emachine;
   return m == EM_AARCH64 || m == EM_AMDGPU || m == EM_HEXAGON || m == EM_PPC ||
-         m == EM_PPC64 || m == EM_RISCV || m == EM_X86_64;
+         m == EM_PPC64 || m == EM_RISCV || m == EM_X86_64 || m == EM_VE;
 }
 
 static void parseClangOption(StringRef opt, const Twine &msg) {

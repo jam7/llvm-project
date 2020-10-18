@@ -423,6 +423,7 @@ static std::pair<ELFKind, uint16_t> parseBfdName(StringRef s) {
       .Case("elf32-littleriscv", {ELF32LEKind, EM_RISCV})
       .Case("elf64-littleriscv", {ELF64LEKind, EM_RISCV})
       .Case("elf64-sparc", {ELF64BEKind, EM_SPARCV9})
+      .Case("elf64-ve", {ELF64LEKind, EM_VE})
       .Default({ELFNoneKind, EM_NONE});
 }
 

@@ -645,6 +645,7 @@ static int64_t getTlsTpOffset(const Symbol &s) {
     // Variant 1.
   case EM_ARM:
   case EM_AARCH64:
+  case EM_VE:
     return s.getVA(0) + config->wordsize * 2 +
            ((tls->p_vaddr - config->wordsize * 2) & (tls->p_align - 1));
   case EM_MIPS:
