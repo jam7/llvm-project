@@ -822,6 +822,7 @@ VETargetLowering::VETargetLowering(const TargetMachine &TM,
   // Currently, expand all.
   for (MVT VT : MVT::vector_valuetypes()) {
     setOperationAction(ISD::SETCC, VT, Expand);
+    setOperationAction(ISD::SELECT_CC, VT, Expand);
   }
 
   /// } Vector instructions
