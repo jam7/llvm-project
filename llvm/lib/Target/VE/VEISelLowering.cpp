@@ -817,6 +817,15 @@ VETargetLowering::VETargetLowering(const TargetMachine &TM,
 
   /// } Floating-point math functions
 
+  /// Vector instructions {
+
+  // Currently, expand all.
+  for (MVT VT : MVT::vector_valuetypes()) {
+    setOperationAction(ISD::SETCC, VT, Expand);
+  }
+
+  /// } Vector instructions
+
   setStackPointerRegisterToSaveRestore(VE::SX11);
 
   // We have target-specific dag combine patterns for the following nodes:
