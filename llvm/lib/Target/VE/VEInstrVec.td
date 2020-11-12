@@ -1451,3 +1451,44 @@ let sx = 0, cz = 0, sz = 0, hasSideEffects = 0, Defs = [VIX] in {
   def LVIXr : RR<0xaf, (outs), (ins I64:$sy), "lvix $sy">;
   let cy = 0 in def LVIXi : RR<0xaf, (outs), (ins uimm6:$sy), "lvix $sy">;
 }
+
+//===----------------------------------------------------------------------===//
+// Pattern Matchings
+//===----------------------------------------------------------------------===//
+
+// Bitconverts among vector registers holding identical vector length and bits
+// like below:
+//   (v8i64 (bitconvert (v8f64 $reg)))
+//   -> (v8i64 $reg)
+foreach vlen = [ "v2", "v4", "v8", "v16", "v32", "v64", "v128", "v256" ] in {
+  def : Pat<(!cast<ValueType>(vlen # "i64")
+                 (bitconvert (!cast<ValueType>(vlen # "f64") V64:$src))),
+            (!cast<ValueType>(vlen # "i64") V64:$src)>;
+  def : Pat<(!cast<ValueType>(vlen # "f64")
+                 (bitconvert (!cast<ValueType>(vlen # "i64") V64:$src))),
+            (!cast<ValueType>(vlen # "f64") V64:$src)>;
+  def : Pat<(!cast<ValueType>(vlen # "i32")
+                 (bitconvert (!cast<ValueType>(vlen # "f32") V64:$src))),
+            (!cast<ValueType>(vlen # "i32") V64:$src)>;
+  def : Pat<(!cast<ValueType>(vlen # "f32")
+                 (bitconvert (!cast<ValueType>(vlen # "i32") V64:$src))),
+            (!cast<ValueType>(vlen # "f32") V64:$src)>;
+}
+
+// Bitconverts between packed vector reigsters and regular registers like below:
+//   (v512i32 (bitconvert (v256f64 $reg)))
+//   -> (v512i32 $reg)
+foreach otype = [ "v512i32", "v512f32" ] in {
+  foreach itype = [ "v256i64", "v256f64" ] in {
+    def : Pat<(!cast<ValueType>(otype)
+                   (bitconvert (!cast<ValueType>(itype) V64:$src))),
+              (!cast<ValueType>(otype) V64:$src)>;
+    def : Pat<(!cast<ValueType>(itype)
+                   (bitconvert (!cast<ValueType>(otype) V64:$src))),
+              (!cast<ValueType>(itype) V64:$src)>;
+  }
+}
+
+// Bitconverts between vector registers holdiing different vector length but
+// identical bits are not OK on VE since i32 or f32 on vector registers holds
+// 64 bits on each entry.
