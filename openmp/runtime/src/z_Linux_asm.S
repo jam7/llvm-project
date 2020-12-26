@@ -1736,7 +1736,8 @@ __kmp_unnamed_critical_addr:
     .size __kmp_unnamed_critical_addr,4
 #endif /* KMP_ARCH_ARM */
 
-#if KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 || KMP_ARCH_RISCV64
+#if KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 || \
+    KMP_ARCH_RISCV64 || KMP_ARCH_VE
 #ifndef KMP_PREFIX_UNDERSCORE
 # define KMP_PREFIX_UNDERSCORE(x) x
 #endif
