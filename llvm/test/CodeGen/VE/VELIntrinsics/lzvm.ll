@@ -1,4 +1,4 @@
-; RUN: llc < %s -mtriple=ve -mattr=+vpu | FileCheck %s
+; RUN: llc < %s -mtriple=ve -mattr=+intrin | FileCheck %s
 
 ;;; Test leading zero of vm intrinsic instructions
 ;;;

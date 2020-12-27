@@ -1,4 +1,4 @@
-; RUN: llc < %s -mtriple=ve -mattr=+vpu | FileCheck %s
+; RUN: llc < %s -mtriple=ve -mattr=+intrin | FileCheck %s
 
 ;;; Test vector multiply intrinsic instructions
 ;;;
